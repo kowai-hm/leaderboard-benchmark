@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+	<title>Leaderboard</title>
+	<style>
+		table,
+		td {
+		    border: 1px solid #333;
+		}
+
+		thead,
+		tfoot {
+		    background-color: #333;
+		    color: #fff;
+		}
+	</style>
+</head>
+<body>
+	<table>
+		<thead>
+			<tr>
+			    <th colspan="2">Leaderboard</th>
+			</tr>
+    		</thead>
+    		<tbody id="leaderboard_body">
+    		</tbody>
+	</table>
+</body>
+<script>
+	async function getScores() {
+		while(1) {
+			await fetch("/scores")
+			.then(response => response.json())
+			.then(data => {
+				let newBoard = document.createElement("tbody");
+				for(let i = 0; i < data.length; i++) {
+					let row = document.createElement("tr");
+					let userCell = document.createElement("td");
+					let scoreCell = document.createElement("td");
+					userCell.innerText = data[i][0];
+					scoreCell.innerText = data[i][1];
+					row.append(userCell);
+					row.append(scoreCell);
+					newBoard.append(row);
+				}
+				document.getElementById("leaderboard_body").innerHTML = newBoard.innerHTML;
+			});
+			//Avoids overusage and related issues on personal computers...
+			await new Promise(r => setTimeout(r, 100));
+		}
+	};
+	getScores();
+</script>
+</html>
