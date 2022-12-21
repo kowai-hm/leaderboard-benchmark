@@ -1,5 +1,6 @@
 import json
 import tarantool
+import time
 
 from tarantool.const import ITERATOR_LT
 from flask import Flask, render_template
@@ -19,7 +20,11 @@ def home():
 	
 @app.route("/scores")
 def scores():
-	return json.dumps(list(scores_space.select(index="secondary", iterator=ITERATOR_LT)))
+	start = time.time()
+	s = scores_space.select(index="secondary", iterator=ITERATOR_LT)
+	end = time.time()
+	print(end-start)
+	return json.dumps(list(s))
 	
 			
 if __name__ == '__main__':

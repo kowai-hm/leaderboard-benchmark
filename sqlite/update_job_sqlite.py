@@ -1,4 +1,4 @@
-import cx_Oracle
+import sqlite3
 import statistics
 import sys
 import time
@@ -8,16 +8,15 @@ from random import randint
 
 # Select sample database
 if len(sys.argv) > 1:
-	dsn = f"sampledb_{sys.argv[1]}"
+	db = f"sampledb_{sys.argv[1]}.db"
 	count = int(sys.argv[1])
 else:
-	dsn = "sampledb"
+	db = "sampledb.db"
 	count = 1000000
 
 
-# TIMESTEN
-connection = cx_Oracle.connect(dsn=dsn)
-connection.autocommit = True
+# SQLite
+connection = sqlite3.connect(f"/home/hm/Bureau/leaderboard/sqlite/{db}", isolation_level=None)
 cursor = connection.cursor()
 
 

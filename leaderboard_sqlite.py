@@ -1,5 +1,5 @@
 import json
-import cx_Oracle
+import sqlite3
 import sys
 import time
 
@@ -10,14 +10,13 @@ app = Flask(__name__)
 
 # Select sample database
 if len(sys.argv) > 1:
-	dsn = f"sampledb_{sys.argv[1]}"
+	db = f"sampledb_{sys.argv[1]}.db"
 else:
-	dsn = "sampledb"
+	db = "sampledb.db"
 
 
-# TIMESTEN
-connection = cx_Oracle.connect(dsn=dsn)
-connection.autocommit = True
+# SQLite
+connection = sqlite3.connect(f"/home/hm/Bureau/leaderboard/sqlite/{db}", check_same_thread=False)
 cursor = connection.cursor()
 
 
